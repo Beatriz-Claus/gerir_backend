@@ -49,7 +49,15 @@ namespace Senai.Gerir.Api
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("GerirChaveSeguranca"))
                     };
                 });
+
+            services.AddCors(options => {
+                options.AddPolicy("PoliticaCors",
+                    builder => builder.AllowAnyOrigin() //Acesso toda a origem
+                                      .AllowAnyMethod() //Acesso a todos os métodos
+                                      .AllowAnyHeader()); //Acesso a todos os cabeçalhos
+            });
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -62,6 +70,8 @@ namespace Senai.Gerir.Api
             }
 
             app.UseRouting();
+
+            app.UseCors("PoliticaCors");
 
             app.UseAuthentication();
 

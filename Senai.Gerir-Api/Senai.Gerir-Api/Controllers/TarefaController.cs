@@ -23,11 +23,18 @@ namespace Senai.Gerir.Api.Controllers
             _tarefaRepositorio = new TarefasRepositorio();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Cadastrar(Tarefa tarefa)
         {
             try
             {
+
+                var usuarioid = HttpContext.User.Claims.FirstOrDefault(
+                                c => c.Type == JwtRegisteredClaimNames.Jti
+                               );
+                tarefa.Usuario.Id = new System.Guid(usuarioid.Value);
+
                 _tarefaRepositorio.Cadastrar(tarefa);
 
                 return Ok(tarefa);
@@ -72,6 +79,78 @@ namespace Senai.Gerir.Api.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPut("AlterarStatus/{idTarefa}")]
+        public IActionResult AlterarStatus(Guid IdTarefa)
+        {
+            try
+            {
+
+                var tarefa = _tarefaRepositorio.AlterarStatus(IdTarefa);
+
+                return Ok(tarefa);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }  
+        
+        //[Authorize]
+        [HttpGet("Buscar/{id}")]
+        public IActionResult Buscar(Guid IdTarefa)
+        {
+            try
+            {
+                //Pega as informações da tarefa a partir do seu ID
+
+                var usuarioid = HttpContext.User.Claims.FirstOrDefault(
+                                c => c.Type == JwtRegisteredClaimNames.Jti
+                               );
+
+                //Busca uma tarefa pelo seu id
+                var tarefa = _tarefaRepositorio.BuscarPorId(IdTarefa);
+
+                //Verifica se a tarefa existe
+                if (tarefa == null)
+                    return NotFound();
+
+                //Verifica se a tarefa é do usuario logado
+                if (tarefa.UsuarioId != new Guid(usuarioid.Value))
+                    return Unauthorized("Usuário não tem permissão");
+
+                return Ok(tarefa);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+
+        public IActionResult ListarTodos()
+        {
+            try
+            {
+                //Pega o valor do usuário que esta logado
+                var usuarioid = HttpContext.User.Claims.FirstOrDefault(
+                                c => c.Type == JwtRegisteredClaimNames.Jti
+                            );
+
+                var tarefas = _tarefaRepositorio.Listar(
+                                    new System.Guid(usuarioid.Value)
+                              );
+
+                return Ok(tarefas);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
     }

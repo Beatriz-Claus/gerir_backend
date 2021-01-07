@@ -23,8 +23,34 @@ namespace Senai.Gerir.Api.Repositorios
 
         public Tarefa AlterarStatus(Guid IdTarefa)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                //Busca a tarefa no BD
+                Tarefa tarefaExiste = BuscarPorId (IdTarefa);
+
+                //Verifica se a tarefa realmente existe
+
+                if (tarefaExiste == null)
+                    throw new Exception ("Tarefa não encontrada");
+
+                //Altera os valores da tarefa
+                tarefaExiste.Status = !tarefaExiste.Status;
+
+
+                _context.Tarefas.Update(tarefaExiste);
+
+                _context.SaveChanges();
+
+                return tarefaExiste;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
+
 
         public Tarefa BuscarPorId(Guid IdTarefa)
         {
@@ -89,7 +115,16 @@ namespace Senai.Gerir.Api.Repositorios
 
         public List<Tarefa> ListarTodos(Guid IdUsuarios)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _context.Tarefas.Where(
+                            c => c.UsuarioId == IdUsuarios
+                            ).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public void Remover(Guid IdTarefa)
@@ -105,6 +140,41 @@ namespace Senai.Gerir.Api.Repositorios
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        Tarefa ITarefasRepositorio.AlterarStatus(Guid IdTarefa)
+        {
+            throw new NotImplementedException();
+        }
+
+        Tarefa ITarefasRepositorio.BuscarPorId(Guid IdTarefa)
+        {
+            throw new NotImplementedException();
+        }
+
+        Tarefa ITarefasRepositorio.Cadastrar(Tarefa tarefa)
+        {
+            throw new NotImplementedException();
+        }
+
+        Tarefa ITarefasRepositorio.Editar(Tarefa tarefa)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<Tarefa> ITarefasRepositorio.Listar(Guid IdUsuarios)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<Tarefa> ITarefasRepositorio.ListarTodos(Guid IdUsuarios)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ITarefasRepositorio.Remover(Guid IdTarefa)
+        {
+            throw new NotImplementedException();
         }
     }
 }
