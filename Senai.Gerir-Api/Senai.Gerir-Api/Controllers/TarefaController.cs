@@ -33,7 +33,7 @@ namespace Senai.Gerir.Api.Controllers
                 var usuarioid = HttpContext.User.Claims.FirstOrDefault(
                                 c => c.Type == JwtRegisteredClaimNames.Jti
                                );
-                tarefa.Usuario.Id = new System.Guid(usuarioid.Value);
+                tarefa.UsuarioId = new System.Guid(usuarioid.Value);
 
                 _tarefaRepositorio.Cadastrar(tarefa);
 
@@ -144,7 +144,7 @@ namespace Senai.Gerir.Api.Controllers
                                     new System.Guid(usuarioid.Value)
                               );
 
-                return Ok(tarefas);
+                return Ok(new { data = tarefas });
             }
             catch (System.Exception ex)
             {

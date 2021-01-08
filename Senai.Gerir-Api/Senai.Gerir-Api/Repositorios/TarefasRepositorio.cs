@@ -113,7 +113,7 @@ namespace Senai.Gerir.Api.Repositorios
             }
         }
 
-        public List<Tarefa> ListarTodos(Guid IdUsuarios)
+        public List<Tarefa> Listar(Guid IdUsuarios)
         {
             try
             {
@@ -142,39 +142,6 @@ namespace Senai.Gerir.Api.Repositorios
             }
         }
 
-        Tarefa ITarefasRepositorio.AlterarStatus(Guid IdTarefa)
-        {
-            throw new NotImplementedException();
-        }
-
-        Tarefa ITarefasRepositorio.BuscarPorId(Guid IdTarefa)
-        {
-            throw new NotImplementedException();
-        }
-
-        Tarefa ITarefasRepositorio.Cadastrar(Tarefa tarefa)
-        {
-            throw new NotImplementedException();
-        }
-
-        Tarefa ITarefasRepositorio.Editar(Tarefa tarefa)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<Tarefa> ITarefasRepositorio.Listar(Guid IdUsuarios)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<Tarefa> ITarefasRepositorio.ListarTodos(Guid IdUsuarios)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ITarefasRepositorio.Remover(Guid IdTarefa)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
